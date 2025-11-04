@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIOSHIELD Debug - User Dropdown</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+        }
+        
+        .top-nav {
+            height: 60px;
+            background: white;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #4facfe;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .user-menu:hover {
+            background: #f0f2f5;
+            border-color: #4facfe;
+        }
+        
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: #4facfe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .user-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            min-width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+        
+        .user-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .user-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s ease;
+        }
+        
+        .user-dropdown a:last-child {
+            border-bottom: none;
+        }
+        
+        .user-dropdown a:hover {
+            background: #f0f2f5;
+            color: #4facfe;
+        }
+        
+        .debug-panel {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+        }
+        
+        .debug-panel h3 {
+            color: #4facfe;
+            margin-bottom: 10px;
+        }
+        
+        .status {
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 4px;
+            background: #1a202c;
+        }
+        
+        .test-buttons {
+            margin: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .test-btn {
+            padding: 10px 16px;
+            background: #4facfe;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .test-btn:hover {
+            background: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-left">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>BIOSHIELD DEBUG</span>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="user-menu" id="user-menu" onclick="toggleUserMenu()">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span>Test User</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="user-dropdown" id="user-dropdown">
+                <a href="#" onclick="testAction('Profile')">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="#" onclick="testAction('Settings')">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="#" onclick="testAction('Logout')">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="debug-panel">
+        <h3>🐛 Debug Information</h3>
+        <div id="debug-log"></div>
+    </div>
+    
+    <div class="test-buttons">
+        <button class="test-btn" onclick="toggleUserMenu()">Toggle Dropdown</button>
+        <button class="test-btn" onclick="showDropdown()">Force Show</button>
+        <button class="test-btn" onclick="hideDropdown()">Force Hide</button>
+        <button class="test-btn" onclick="checkElements()">Check Elements</button>
+        <button class="test-btn" onclick="clearLog()">Clear Log</button>
+    </div>
+    
+    <div style="padding: 20px;">
+        <h2>User Dropdown Test Page</h2>
+        <p>This is a minimal test to debug the user dropdown functionality.</p>
+        <ol>
+            <li><strong>Click on "Test User"</strong> in the top navigation</li>
+            <li>The dropdown should appear below it</li>
+            <li>Check the debug panel for detailed information</li>
+            <li>Use the test buttons to manually control the dropdown</li>
+        </ol>
+    </div>
+    
+    <script>
+        let debugLog = document.getElementById('debug-log');
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            debugLog.innerHTML += `<div class="status">[${timestamp}] ${message}</div>`;
+            debugLog.scrollTop = debugLog.scrollHeight;
+            console.log(message);
+        }
+        
+        function toggleUserMenu() {
+            log('🔧 toggleUserMenu() called');
+            
+            const dropdown = document.getElementById('user-dropdown');
+            if (!dropdown) {
+                log('❌ ERROR: user-dropdown element not found!');
+                return;
+            }
+            
+            const isVisible = dropdown.classList.contains('show');
+            log(`📊 Current state: ${isVisible ? 'VISIBLE' : 'HIDDEN'}`);
+            
+            if (isVisible) {
+                dropdown.classList.remove('show');
+                log('👆 Removing "show" class');
+            } else {
+                dropdown.classList.add('show');
+                log('👇 Adding "show" class');
+            }
+            
+            // Check computed styles
+            const styles = window.getComputedStyle(dropdown);
+            log(`💡 Computed styles: opacity=${styles.opacity}, visibility=${styles.visibility}, display=${styles.display}`);
+        }
+        
+        function showDropdown() {
+            log('🔧 showDropdown() called');
+            const dropdown = document.getElementById('user-dropdown');
+            if (dropdown) {
+                dropdown.classList.add('show');
+                dropdown.style.display = 'block';
+                dropdown.style.opacity = '1';
+                dropdown.style.visibility = 'visible';
+                log('✅ Force show applied');
+            }
+        }
+        
+        function hideDropdown() {
+            log('🔧 hideDropdown() called');
+            const dropdown = document.getElementById('user-dropdown');
+            if (dropdown) {
+                dropdown.classList.remove('show');
+                log('✅ Force hide applied');
+            }
+        }
+        
+        function checkElements() {
+            log('🔍 Checking elements...');
+            
+            const userMenu = document.getElementById('user-menu');
+            const dropdown = document.getElementById('user-dropdown');
+            
+            log(`👤 User menu found: ${userMenu ? 'YES' : 'NO'}`);
+            log(`📋 Dropdown found: ${dropdown ? 'YES' : 'NO'}`);
+            
+            if (dropdown) {
+                const rect = dropdown.getBoundingClientRect();
+                log(`📐 Dropdown position: top=${rect.top}, left=${rect.left}, width=${rect.width}, height=${rect.height}`);
+                log(`🎨 Dropdown classes: ${dropdown.className}`);
+                
+                const styles = window.getComputedStyle(dropdown);
+                log(`💄 Computed styles: z-index=${styles.zIndex}, position=${styles.position}`);
+            }
+            
+            if (userMenu) {
+                const rect = userMenu.getBoundingClientRect();
+                log(`📐 User menu position: top=${rect.top}, left=${rect.left}, width=${rect.width}, height=${rect.height}`);
+            }
+        }
+        
+        function testAction(action) {
+            log(`🎯 ${action} clicked!`);
+            alert(`${action} clicked!`);
+        }
+        
+        function clearLog() {
+            debugLog.innerHTML = '';
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('user-dropdown');
+            const userMenu = document.getElementById('user-menu');
+            
+            if (dropdown && userMenu) {
+                if (!userMenu.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                    log('🖱️ Clicked outside - dropdown hidden');
+                }
+            }
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 Debug page loaded');
+            checkElements();
+        });
+    </script>
+</body>
+</html>
