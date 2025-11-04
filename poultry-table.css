@@ -1,0 +1,205 @@
+/* Poultry Table Styles */
+.poultry-table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+}
+
+.poultry-header {
+    margin-bottom: 1rem;
+}
+
+.poultry-header h2 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.poultry-header p {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.poultry-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.poultry-table th, .poultry-table td {
+    border: 1px solid #e9ecef;
+    padding: 12px 16px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.poultry-table th {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.poultry-table th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.poultry-table th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.poultry-table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.poultry-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.poultry-table tbody tr:hover {
+    background-color: #e8f5e8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.poultry-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+.poultry-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+
+/* Status styling */
+.healthy-status {
+    color: #28a745;
+    font-weight: 600;
+    background-color: #d4edda;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    display: inline-block;
+    text-align: center;
+    min-width: 70px;
+}
+
+.unhealthy-status {
+    color: #dc3545;
+    font-weight: 600;
+    background-color: #f8d7da;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    display: inline-block;
+    text-align: center;
+    min-width: 70px;
+}
+
+.disease-name {
+    color: #721c24;
+    font-style: italic;
+    background-color: #f5c6cb;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+/* Animal type badges */
+.animal-type {
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    display: inline-block;
+    text-align: center;
+    min-width: 60px;
+}
+
+.animal-type.chicken {
+    background-color: #cce5ff;
+    color: #0066cc;
+}
+
+.animal-type.pig {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.animal-type.duck {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.animal-type.turkey {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Temperature styling */
+.temperature-value {
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .poultry-table-container {
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+
+    .poultry-table {
+        font-size: 0.8rem;
+    }
+
+    .poultry-table th, .poultry-table td {
+        padding: 8px 12px;
+    }
+
+    .poultry-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .healthy-status, .unhealthy-status {
+        min-width: 60px;
+        font-size: 0.75rem;
+        padding: 3px 6px;
+    }
+
+    .animal-type {
+        min-width: 50px;
+        font-size: 0.75rem;
+        padding: 3px 6px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .poultry-table-container {
+        padding: 0.75rem;
+    }
+
+    .poultry-table th, .poultry-table td {
+        padding: 6px 8px;
+        font-size: 0.75rem;
+    }
+
+    .poultry-header h2 {
+        font-size: 1.1rem;
+    }
+}
