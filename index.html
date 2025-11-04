@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIOSHIELD - Smart Digital Farm Management</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+    <link rel="stylesheet" href="css/poultry-table.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading" class="loading-screen">
+        <div class="spinner"></div>
+        <h3>Loading BIOSHIELD...</h3>
+    </div>
+
+    <!-- Authentication Section -->
+    <div id="auth-container" class="auth-container">
+        <!-- Login Form -->
+        <div id="login-form" class="auth-form">
+            <div class="auth-header">
+                <i class="fas fa-shield-alt"></i>
+                <h2>BIOSHIELD</h2>
+                <p>Smart Digital Farm Management</p>
+            </div>
+            
+            <!-- User Type Selection -->
+            <div class="user-type-selector">
+                <div class="user-type-option active" data-type="farmer" onclick="selectUserType('farmer')">
+                    <i class="fas fa-user"></i>
+                    <span>Farmer</span>
+                </div>
+                <div class="user-type-option" data-type="admin" onclick="selectUserType('admin')">
+                    <i class="fas fa-user-cog"></i>
+                    <span>Admin</span>
+                </div>
+                <div class="user-type-option" data-type="vet" onclick="selectUserType('vet')">
+                    <i class="fas fa-user-md"></i>
+                    <span>Veterinarian</span>
+                </div>
+            </div>
+            
+            <form>
+                <!-- Login Method Selection -->
+                <div class="login-method-tabs">
+                    <button type="button" class="method-tab active" data-method="email" onclick="switchLoginMethod('email')">
+                        <i class="fas fa-envelope"></i> Email
+                    </button>
+                    <button type="button" class="method-tab" data-method="phone" onclick="switchLoginMethod('phone')">
+                        <i class="fas fa-phone"></i> Phone
+                    </button>
+                </div>
+                
+                <!-- Email Login -->
+                <div class="login-method-content" id="email-login">
+                    <div class="form-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="login-email" placeholder="Email Address" required>
+                    </div>
+                </div>
+                
+                <!-- Phone Login -->
+                <div class="login-method-content" id="phone-login" style="display: none;">
+                    <div class="form-group">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="login-phone" placeholder="Phone Number (+91 987654321)" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="login-password" placeholder="Password" required>
+                    <i class="fas fa-eye-slash toggle-password" onclick="togglePassword('login-password', this)"></i>
+                </div>
+                
+                <!-- Remember Me & Forgot Password -->
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember-me">
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password" onclick="showForgotPassword()">Forgot Password?</a>
+                </div>
+                
+                <button type="submit" class="auth-btn" onclick="handleEnhancedLogin(event)">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+            </form>
+            
+            <div class="auth-divider">
+                <span>New to BIOSHIELD?</span>
+            </div>
+            
+            <p class="switch-auth">
+                <a href="#" onclick="showRegister()" class="register-link">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </a>
+            </p>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="register-form" class="auth-form register-form" style="display: none;">
+            <div class="auth-header">
+                <i class="fas fa-shield-alt"></i>
+                <h2>Join BIOSHIELD</h2>
+                <p>Create your farm management account</p>
+            </div>
+            
+            <!-- Registration Steps Indicator -->
+            <div class="registration-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <span>Personal Info</span>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <span>Farm Details</span>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <span>Security</span>
+                </div>
+            </div>
+            
+            <form>
+                <!-- Step 1: Personal Information -->
+                <div class="registration-step active" id="step-1">
+                    <h4><i class="fas fa-user"></i> Personal Information</h4>
+                    
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="register-firstname" placeholder="First Name" required>
+                        </div>
+                        <div class="form-group half-width">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="register-lastname" placeholder="Last Name" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="register-email" placeholder="Email Address" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="register-phone" placeholder="Phone Number (+1234567890)" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <i class="fas fa-calendar-alt"></i>
+                        <input type="date" id="register-dob" placeholder="Date of Birth">
+                        <label class="field-label">Date of Birth (Optional)</label>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Farm Details -->
+                <div class="registration-step" id="step-2" style="display: none;">
+                    <h4><i class="fas fa-home"></i> Farm Information</h4>
+                    
+                    <div class="form-group">
+                        <i class="fas fa-home"></i>
+                        <input type="text" id="register-farm" placeholder="Farm Name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <input type="text" id="register-location" placeholder="Farm Location/Address" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            <i class="fas fa-ruler-combined"></i>
+                            <input type="number" id="register-farm-size" placeholder="Farm Size (acres)">
+                        </div>
+                        <div class="form-group half-width">
+                            <i class="fas fa-paw"></i>
+                            <select id="register-farm-type">
+                                <option value="">Farm Type</option>
+                                <option value="pig">Pig Farm</option>
+                                <option value="poultry">Poultry Farm</option>
+                                <option value="mixed">Mixed Farm</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <i class="fas fa-id-card"></i>
+                        <input type="text" id="register-license" placeholder="Farm License Number (Optional)">
+                    </div>
+                </div>
+                
+                <!-- Step 3: Security -->
+                <div class="registration-step" id="step-3" style="display: none;">
+                    <h4><i class="fas fa-lock"></i> Account Security</h4>
+                    
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="register-password" placeholder="Password" required>
+                        <i class="fas fa-eye-slash toggle-password" onclick="togglePassword('register-password', this)"></i>
+                        <div class="password-strength" id="password-strength"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+                        <i class="fas fa-eye-slash toggle-password" onclick="togglePassword('confirm-password', this)"></i>
+                    </div>
+                    
+                    <!-- Terms and Conditions -->
+                    <div class="form-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="accept-terms" required>
+                            <span class="checkmark"></span>
+                            <span class="checkbox-text">
+                                I agree to the <a href="#" onclick="showTerms()">Terms of Service</a> 
+                                and <a href="#" onclick="showPrivacy()">Privacy Policy</a>
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="newsletter-opt">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-text">
+                                Send me updates about new features and farm management tips
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="form-navigation">
+                    <button type="button" class="nav-btn prev-btn" onclick="previousStep()" style="display: none;">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <button type="button" class="nav-btn next-btn" onclick="nextStep()">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button type="submit" class="auth-btn register-submit" onclick="handleEnhancedRegister(event)" style="display: none;">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </div>
+            </form>
+            
+            <div class="auth-divider">
+                <span>Already have an account?</span>
+            </div>
+            
+            <p class="switch-auth">
+                <a href="#" onclick="showLogin()" class="login-link">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="dashboard" style="display: none;">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="nav-left">
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>BIOSHIELD</span>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="notification-icon" onclick="toggleNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-count" id="notification-count">0</span>
+                </div>
+                <div class="user-menu" onclick="toggleUserMenu()">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span id="user-name">Farmer</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="user-dropdown" id="user-dropdown" style="
+                    position: absolute !important;
+                    top: 55px !important;
+                    right: 0 !important;
+                    background: #ffffff !important;
+                    border: 1px solid #ddd !important;
+                    border-radius: 8px !important;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+                    min-width: 180px !important;
+                    opacity: 0 !important;
+                    visibility: hidden !important;
+                    transform: translateY(-10px) !important;
+                    transition: all 0.3s ease !important;
+                    z-index: 999999 !important;
+                    display: block !important;
+                    pointer-events: none !important;
+                ">
+                    <a href="#" onclick="showProfile()" style="
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 10px !important;
+                        padding: 12px 16px !important;
+                        text-decoration: none !important;
+                        color: #333 !important;
+                        border-bottom: 1px solid #eee !important;
+                        transition: background-color 0.3s ease !important;
+                    " onmouseover="this.style.backgroundColor='#f5f5f5'" onmouseout="this.style.backgroundColor='transparent'">
+                        <i class="fas fa-user"></i> Profile
+                    </a>
+                    <a href="#" onclick="showSettings()" style="
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 10px !important;
+                        padding: 12px 16px !important;
+                        text-decoration: none !important;
+                        color: #333 !important;
+                        border-bottom: 1px solid #eee !important;
+                        transition: background-color 0.3s ease !important;
+                    " onmouseover="this.style.backgroundColor='#f5f5f5'" onmouseout="this.style.backgroundColor='transparent'">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                    <a href="#" onclick="logout()" style="
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 10px !important;
+                        padding: 12px 16px !important;
+                        text-decoration: none !important;
+                        color: #333 !important;
+                        border-bottom: none !important;
+                        transition: background-color 0.3s ease !important;
+                    " onmouseover="this.style.backgroundColor='#f5f5f5'" onmouseout="this.style.backgroundColor='transparent'">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item active" onclick="showSection('overview')">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="nav-item" onclick="showSection('animals')">
+                    <i class="fas fa-paw"></i>
+                    <span>Animals</span>
+                </li>
+                <li class="nav-item" onclick="showSection('poultry')">
+                    <i class="fas fa-dove"></i>
+                    <span>Poultry</span>
+                </li>
+                <li class="nav-item" onclick="showSection('vaccines')">
+                    <i class="fas fa-syringe"></i>
+                    <span>Vaccines</span>
+                </li>
+                <li class="nav-item" onclick="showSection('sensors')">
+                    <i class="fas fa-thermometer-half"></i>
+                    <span>Sensors</span>
+                </li>
+                <li class="nav-item" onclick="showSection('alerts')">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Alerts</span>
+                </li>
+                <li class="nav-item" onclick="showSection('biosecurity')">
+                    <i class="fas fa-shield-virus"></i>
+                    <span>Biosecurity</span>
+                </li>
+                <li class="nav-item" onclick="showSection('reports')">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Dashboard Overview -->
+            <section id="overview-section" class="content-section active">
+                <div class="section-header">
+                <div class="section-header">
+                    <h1>Dashboard Overview</h1>
+                    <p>Monitor your farm's health and performance</p>
+                </div>
+
+                <!-- Key Metrics Cards -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-paw"></i>
+                        </div>
+                        <div class="metric-info">
+                            <h3 id="total-animals">0</h3>
+                            <p>Total Animals</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-syringe"></i>
+                        </div>
+                        <div class="metric-info">
+                            <h3 id="pending-vaccines">0</h3>
+                            <p>Pending Vaccines</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="metric-info">
+                            <h3 id="active-alerts">0</h3>
+                            <p>Active Alerts</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+                        <div class="metric-info">
+                            <h3 id="avg-temperature">--°C</h3>
+                            <p>Avg Temperature</p>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Recent Activities and Sensor Data -->
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-clock"></i> Recent Activities</h3>
+                    <div class="activity-list" id="recent-activities">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p><strong>Welcome to BIOSHIELD!</strong></p>
+                                <span>Start by adding your first animals</span>
+                                <small>Just now</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-chart-line"></i> Live Sensor Data</h3>
+                    <div class="sensor-grid">
+                        <div class="sensor-item">
+                            <i class="fas fa-thermometer-half"></i>
+                            <span class="sensor-label">Temperature</span>
+                            <span class="sensor-value" id="live-temp">--°C</span>
+                        </div>
+                        <div class="sensor-item">
+                            <i class="fas fa-tint"></i>
+                            <span class="sensor-label">Humidity</span>
+                            <span class="sensor-value" id="live-humidity">--%</span>
+                        </div>
+                        <div class="sensor-item">
+                            <i class="fas fa-wind"></i>
+                            <span class="sensor-label">Ammonia</span>
+                            <span class="sensor-value" id="live-ammonia">-- ppm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Poultry Data Table -->
+            <div class="dashboard-card poultry-table-container" id="poultry-table-container"></div>
+            </section>
+            <!-- Dashboard Overview -->
+            <section id="overview-section" class="content-section active">
+                <div class="section-header">
+                    <h1>Dashboard Overview</h1>
+                    <p>Monitor your farm's health and performance</p>
+                </div>
+
+                <!-- Key Metrics Cards -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-paw"></i>
+                        </div>
+                        <div class="metric-info">
+                            <h3 id="total-animals">0</h3>
+                            <p>Total Animals</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-syringe"></i>
+                        </div>
+                        <div class="metric-info">
+                            <h3 id="pending-vaccines">0</h3>
+                            <p>Pending Vaccines</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="metric-info">
+                            <h3 id="active-alerts">0</h3>
+                            <p>Active Alerts</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+                        <div class="metric-info">
+                            <h3 id="avg-temperature">--°C</h3>
+                            <p>Avg Temperature</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities and Sensor Data -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-clock"></i> Recent Activities</h3>
+                        <div class="activity-list" id="recent-activities">
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p><strong>Welcome to BIOSHIELD!</strong></p>
+                                    <span>Start by adding your first animals</span>
+                                    <small>Just now</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-chart-line"></i> Live Sensor Data</h3>
+                        <div class="sensor-grid">
+                            <div class="sensor-item">
+                                <i class="fas fa-thermometer-half"></i>
+                                <span class="sensor-label">Temperature</span>
+                                <span class="sensor-value" id="live-temp">--°C</span>
+                            </div>
+                            <div class="sensor-item">
+                                <i class="fas fa-tint"></i>
+                                <span class="sensor-label">Humidity</span>
+                                <span class="sensor-value" id="live-humidity">--%</span>
+                            </div>
+                            <div class="sensor-item">
+                                <i class="fas fa-wind"></i>
+                                <span class="sensor-label">Ammonia</span>
+                                <span class="sensor-value" id="live-ammonia">-- ppm</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Dashboard Overview -->
+
+            <!-- Other sections will be added dynamically -->
+        </main>
+    </div>
+
+    <!-- Notification Panel -->
+    <div id="notification-panel" class="notification-panel">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button onclick="clearAllNotifications()" class="clear-btn">Clear All</button>
+        </div>
+        <div class="notification-list" id="notification-list">
+            <div class="no-notifications">
+                <i class="fas fa-bell-slash"></i>
+                <p>No new notifications</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot Widget -->
+    <div class="chatbot-container">
+        <button id="chatbot-toggle" class="chatbot-toggle">
+            <i class="fas fa-comments"></i>
+        </button>
+        <div id="chatbot-window" class="chatbot-window">
+            <div class="chatbot-header">
+                <h3>BIOSHIELD Assistant</h3>
+                <button id="chatbot-close" class="chatbot-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="chatbot-messages" class="chatbot-messages">
+                <div class="message bot">
+                    <div class="message-avatar"></div>
+                    <div class="message-content">Hello! I'm your BIOSHIELD assistant. How can I help you today?</div>
+                </div>
+            </div>
+            <div id="typing-indicator" class="typing-indicator">Assistant is typing...</div>
+            <div class="chatbot-input-area">
+                <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Ask me anything about BIOSHIELD...">
+                <button id="chatbot-send" class="chatbot-send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/animals.js"></script>
+    <script src="js/vaccines.js"></script>
+    <script src="js/sensors.js"></script>
+    <script src="js/alerts.js"></script>
+    <script src="js/biosecurity.js"></script>
+    <script src="js/reports.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script src="js/app.js"></script>
+    
+    <!-- Direct fix for user dropdown -->
+    <script>
+        // Ensure dropdown works immediately
+        document.addEventListener('DOMContentLoaded', function() {
+            // Override the toggleUserMenu function with a working version
+            window.toggleUserMenu = function() {
+                console.log('🔧 Direct toggleUserMenu called');
+                const dropdown = document.getElementById('user-dropdown');
+                if (dropdown) {
+                    const isVisible = dropdown.style.opacity === '1';
+                    console.log('Current visibility:', isVisible);
+                    
+                    if (isVisible) {
+                        // Hide dropdown
+                        dropdown.style.opacity = '0';
+                        dropdown.style.visibility = 'hidden';
+                        dropdown.style.transform = 'translateY(-10px)';
+                        dropdown.style.pointerEvents = 'none';
+                        dropdown.classList.remove('show');
+                        console.log('✅ Dropdown hidden');
+                    } else {
+                        // Show dropdown
+                        dropdown.style.opacity = '1';
+                        dropdown.style.visibility = 'visible';
+                        dropdown.style.transform = 'translateY(0)';
+                        dropdown.style.pointerEvents = 'auto';
+                        dropdown.classList.add('show');
+                        console.log('✅ Dropdown shown');
+                    }
+                } else {
+                    console.error('❌ Dropdown element not found');
+                }
+            };
+            
+            // Also create a test function
+            window.testDropdown = function() {
+                const dropdown = document.getElementById('user-dropdown');
+                if (dropdown) {
+                    dropdown.style.opacity = '1';
+                    dropdown.style.visibility = 'visible';
+                    dropdown.style.transform = 'translateY(0)';
+                    dropdown.style.pointerEvents = 'auto';
+                    console.log('🧪 Test: Dropdown force shown');
+                }
+            };
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                const dropdown = document.getElementById('user-dropdown');
+                const userMenu = document.querySelector('.user-menu');
+                
+                if (dropdown && userMenu) {
+                    if (!userMenu.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.style.opacity = '0';
+                        dropdown.style.visibility = 'hidden';
+                        dropdown.style.transform = 'translateY(-10px)';
+                        dropdown.style.pointerEvents = 'none';
+                        dropdown.classList.remove('show');
+                    }
+                }
+            });
+            
+            console.log('✅ Direct dropdown fix loaded');
+            console.log('💡 Try typing testDropdown() in console to test');
+        });
+    </script>
+    
+    <!-- Additional CSS fix -->
+    <style>
+        .user-dropdown.show {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+            pointer-events: auto !important;
+        }
+        
+        /* Debug helper */
+        .debug-visible {
+            background: red !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            position: fixed !important;
+            top: 100px !important;
+            right: 20px !important;
+            z-index: 999999 !important;
+        }
+    </style>
+</body>
+</html>
