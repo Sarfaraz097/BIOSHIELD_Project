@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test User Dropdown</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Poppins', sans-serif;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <!-- Top Navigation -->
+        <nav class="top-nav" style="position: relative;">
+            <div class="nav-left">
+                <button class="menu-toggle" onclick="alert('Sidebar toggle works!')">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>BIOSHIELD</span>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="notification-icon" onclick="alert('Notifications work!')">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-count" id="notification-count">3</span>
+                </div>
+                <div class="user-menu" onclick="toggleUserMenu()">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span id="user-name">John Farmer</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="user-dropdown" id="user-dropdown">
+                    <a href="#" onclick="alert('Profile clicked!')"><i class="fas fa-user"></i> Profile</a>
+                    <a href="#" onclick="alert('Settings clicked!')"><i class="fas fa-cog"></i> Settings</a>
+                    <a href="#" onclick="alert('Logout clicked!')"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </nav>
+        
+        <div style="padding: 80px 20px 20px 20px;">
+            <h2>User Dropdown Test</h2>
+            <p>Click on the user name/avatar in the top navigation to test the dropdown menu.</p>
+            <p>The dropdown should appear below the user menu with Profile, Settings, and Logout options.</p>
+            
+            <h3>Test Instructions:</h3>
+            <ol>
+                <li>Click on "John Farmer" or the user avatar</li>
+                <li>The dropdown should appear with animation</li>
+                <li>Click anywhere else to close it</li>
+                <li>Check browser console for debug messages</li>
+            </ol>
+            
+            <button onclick="toggleUserMenu()" style="padding: 10px 20px; margin: 10px 0; background: #4facfe; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Toggle User Menu (Test Button)
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Simple test function
+        function toggleUserMenu() {
+            console.log('toggleUserMenu called');
+            const dropdown = document.getElementById('user-dropdown');
+            if (dropdown) {
+                const isVisible = dropdown.classList.contains('show');
+                if (isVisible) {
+                    dropdown.classList.remove('show');
+                } else {
+                    dropdown.classList.add('show');
+                }
+                console.log('User menu toggled:', !isVisible);
+                console.log('Dropdown classes:', dropdown.className);
+            } else {
+                console.error('User dropdown not found!');
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.user-menu') && !e.target.closest('.user-dropdown')) {
+                const dropdown = document.getElementById('user-dropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                }
+            }
+        });
+
+        console.log('Test page loaded successfully');
+    </script>
+</body>
+</html>
